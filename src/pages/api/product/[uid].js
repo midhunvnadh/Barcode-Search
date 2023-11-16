@@ -2,18 +2,31 @@ import amazon_search from "@/functions/amazon";
 import flipkart_search from "@/functions/flipkart";
 import upcitemdb_com from "@/functions/upcitemdb_com";
 
-const searchFunctions = [upcitemdb_com, flipkart_search, amazon_search];
+const searchFunctions = [
+  {
+    name: "UPCItemDB",
+    fn: upcitemdb_com,
+  },
+  {
+    name: "Amazon",
+    fn: amazon_search,
+  },
+  {
+    name: "Flipkart",
+    fn: flipkart_search,
+  },
+];
 
-function searchFunctionWrapper(fn, arg) {
+function searchFunctionWrapper(fn, name, arg) {
   return new Promise((resolve, reject) => {
-    console.log("Fetching data from " + fn.name);
+    console.log(`Fetching data from ${name}`);
     fn(arg)
       .then((data) => {
-        console.log("Fetched data from " + fn.name);
+        console.log(`Fetched data from ${name}`);
         resolve(data);
       })
       .catch((e) => {
-        console.log("Failed to fetch data from " + fn.name);
+        console.log(`Failed to fetch data from ${name}`);
         console.error(e);
         resolve([]);
       });
@@ -23,10 +36,10 @@ function searchFunctionWrapper(fn, arg) {
 export default async function handler(req, res) {
   const { uid } = req.query;
 
-  const searchFunctionsPromises = searchFunctions.map(async (fn) => {
+  const searchFunctionsPromises = searchFunctions.map(async ({ name, fn }) => {
     return {
-      name: fn.name,
-      promise: await searchFunctionWrapper(fn, uid),
+      name: name,
+      promise: await searchFunctionWrapper(fn, name, uid),
     };
   });
   const searchFunctionsResults = await Promise.all(searchFunctionsPromises);
@@ -36,14 +49,11 @@ export default async function handler(req, res) {
     results[searchFunctionResult.name] = searchFunctionResult.promise;
   }
 
-  const shopping_results = [
-    ...results.flipkart_search,
-    ...results.amazon_search,
-  ];
+  const shopping_results = [...results["Flipkart"], ...results["Amazon"]];
   const shopping_results_rd = [...new Set(shopping_results)];
 
   results = {
-    main: results.upcitemdb_com,
+    main: results["UPCItemDB"],
     others: shopping_results_rd,
   };
 
