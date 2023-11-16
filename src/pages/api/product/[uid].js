@@ -37,7 +37,6 @@ function searchFunctionWrapper(fn, name, arg) {
       })
       .catch((e) => {
         console.log(`Failed to fetch data from ${name}`);
-        console.error(e);
         resolve([]);
       })
       .finally(() => {
