@@ -3,6 +3,7 @@ import barcodelookup from "@/functions/engines/barcodelookup";
 import ean_search_org from "@/functions/engines/ean_search.org";
 import flipkart_search from "@/functions/engines/flipkart";
 import go_upc from "@/functions/engines/go_upc";
+import google_search from "@/functions/engines/google";
 import upcitemdb_com from "@/functions/engines/upcitemdb_com";
 
 const searchFunctions = [
@@ -34,6 +35,11 @@ const searchFunctions = [
   {
     name: "Flipkart",
     fn: flipkart_search,
+    category: "others",
+  },
+  {
+    name: "Google",
+    fn: google_search,
     category: "others",
   },
 ];

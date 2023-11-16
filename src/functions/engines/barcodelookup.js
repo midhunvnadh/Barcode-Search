@@ -12,12 +12,9 @@ export default async function barcodelookup(query) {
   try {
     const res = await cf.request(`https://www.barcodelookup.com/${query}`);
     data = res.body;
-    console.log("Data: ", data);
   } catch (e) {
-    console.log("Error: ", e);
-    const { data, status } = e.response;
-    console.log("Error: ", data);
-    console.log("Status Code: ", status);
+    return "";
+    //console.log("Error: ", e);
   }
   const $ = cheerio.load(data);
 
