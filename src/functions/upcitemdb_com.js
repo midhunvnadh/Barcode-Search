@@ -26,6 +26,6 @@ export default async function upcitemdb_com(query) {
     products = products.map((product) => removeSpecialCharacters(product));
     return products;
   } catch (e) {
-    return [];
+    return null;
   }
 }

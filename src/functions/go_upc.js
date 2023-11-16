@@ -3,21 +3,17 @@ const cheerio = require("cheerio");
 import removeSpecialCharacters from "./removeSpecialChars";
 import UserAgent from "user-agents";
 
-export default async function flipkart_search(query) {
+export default async function go_upc(query) {
   const userAgent = new UserAgent();
-  const { data } = await axios.get(
-    `https://www.flipkart.com/search?q=${query}`,
-    {
-      headers: {
-        "User-Agent": userAgent.toString(),
-        "Accept-Encoding": "gzip, deflate, br",
-        Connection: "keep-alive",
-      },
-    }
-  );
+  const { data } = await axios.get(`https://go-upc.com/search?q=${query}`, {
+    headers: {
+      "User-Agent": userAgent.toString(),
+      "Accept-Encoding": "gzip, deflate, br",
+    },
+  });
   const $ = cheerio.load(data);
 
-  const results = $(".s1Q9rs, ._4rR01T");
+  const results = $(".product-name");
 
   var products = [];
 
@@ -28,5 +24,6 @@ export default async function flipkart_search(query) {
   }
 
   products = products.map((product) => removeSpecialCharacters(product));
-  return products;
+
+  return products[0];
 }

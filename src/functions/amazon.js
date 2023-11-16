@@ -5,13 +5,12 @@ import UserAgent from "user-agents";
 
 export default async function amazon_search(query) {
   const userAgent = new UserAgent();
-  const response = await fetch(`https://www.amazon.com/s?k=${query}`, {
+  const { data } = await axios.get(`https://www.amazon.com/s?k=${query}`, {
     headers: {
       "User-Agent": userAgent.toString(),
       "Accept-Encoding": "gzip, deflate, br",
     },
   });
-  const data = await response.text();
   const $ = cheerio.load(data);
 
   const results = $(".a-size-base-plus.a-color-base.a-text-normal");

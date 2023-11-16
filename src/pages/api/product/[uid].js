@@ -1,5 +1,6 @@
 import amazon_search from "@/functions/amazon";
 import flipkart_search from "@/functions/flipkart";
+import go_upc from "@/functions/go_upc";
 import upcitemdb_com from "@/functions/upcitemdb_com";
 
 const searchFunctions = [
@@ -15,25 +16,33 @@ const searchFunctions = [
     name: "Flipkart",
     fn: flipkart_search,
   },
+  {
+    name: "GoUPC",
+    fn: go_upc,
+  },
 ];
 
 function searchFunctionWrapper(fn, name, arg) {
   return new Promise((resolve, reject) => {
     console.log(`Fetching data from ${name}`);
+
+    var x = setTimeout(() => {
+      console.log(`Timed out ${name}`);
+      resolve([]);
+    }, 4000);
     fn(arg)
       .then((data) => {
-        console.log(`Fetched data from ${name}`);
+        console.log(`Fetched data from ${name}`, data);
         resolve(data);
       })
       .catch((e) => {
         console.log(`Failed to fetch data from ${name}`);
         console.error(e);
         resolve([]);
+      })
+      .finally(() => {
+        clearTimeout(x);
       });
-    setTimeout(() => {
-      console.log(`Timed out ${name}`);
-      resolve([]);
-    }, 4000);
   });
 }
 
@@ -55,11 +64,11 @@ export default async function handler(req, res) {
 
   const shopping_results = [...results["Flipkart"], ...results["Amazon"]];
   const shopping_results_rd = [...new Set(shopping_results)];
-
-  results = {
-    main: results["UPCItemDB"] ? results["UPCItemDB"][0] : "",
-    others: shopping_results_rd,
-  };
+  const main =
+    (results["UPCItemDB"] ? results["UPCItemDB"][0] : "") ||
+    results["GoUPC"] ||
+    null;
+  results = { main, others: shopping_results_rd };
 
   res.status(200).json(results);
 }
