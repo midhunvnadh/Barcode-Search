@@ -10,9 +10,13 @@ function searchFunctionWrapper(fn, arg) {
   return new Promise((resolve, reject) => {
     console.log("Fetching data from " + fn.name);
     fn(arg)
-      .then(resolve)
+      .then((data) => {
+        console.log("Fetched data from " + fn.name);
+        resolve(data);
+      })
       .catch((e) => {
         console.log("Failed to fetch data from " + fn.name);
+        console.error(e);
         resolve([]);
       });
   });
