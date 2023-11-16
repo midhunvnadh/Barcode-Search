@@ -30,6 +30,10 @@ function searchFunctionWrapper(fn, name, arg) {
         console.error(e);
         resolve([]);
       });
+    setTimeout(() => {
+      console.log(`Timed out ${name}`);
+      resolve([]);
+    }, 4000);
   });
 }
 
@@ -53,7 +57,7 @@ export default async function handler(req, res) {
   const shopping_results_rd = [...new Set(shopping_results)];
 
   results = {
-    main: results["UPCItemDB"],
+    main: results["UPCItemDB"] ? results["UPCItemDB"][0] : "",
     others: shopping_results_rd,
   };
 
