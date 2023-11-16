@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     flipkart_results = [],
     amazon_results = [];
   try {
-    //flipkart_results = await flipkart_search(uid);
+    flipkart_results = await flipkart_search(uid);
   } catch (e) {
     console.log("Flipkart failed");
   }
