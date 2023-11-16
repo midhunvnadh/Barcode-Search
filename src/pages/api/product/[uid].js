@@ -5,9 +5,24 @@ import upcitemdb_com from "@/functions/upcitemdb_com";
 export default async function handler(req, res) {
   const { uid } = req.query;
 
-  const flipkart_results = await flipkart_search(uid);
-  const amazon_results = await amazon_search(uid);
-  const upcitemdb_com_results = await upcitemdb_com(uid);
+  var upcitemdb_com_results = [],
+    flipkart_results = [],
+    amazon_results = [];
+  try {
+    flipkart_results = await flipkart_search(uid);
+  } catch (e) {
+    console.log("Flipkart failed");
+  }
+  try {
+    amazon_results = await amazon_search(uid);
+  } catch (e) {
+    console.log("Amazon failed");
+  }
+  try {
+    upcitemdb_com_results = await upcitemdb_com(uid);
+  } catch (e) {
+    console.log("upcitemdb_com failed");
+  }
 
   const shopping_results = [...flipkart_results, ...amazon_results];
   const shopping_results_rd = [...new Set(shopping_results)];
