@@ -1,11 +1,11 @@
 import axios from "axios";
 const cheerio = require("cheerio");
-import removeSpecialCharacters from "./removeSpecialChars";
+import removeSpecialCharacters from "../removeSpecialChars";
 import UserAgent from "user-agents";
 
 export default async function amazon_search(query) {
   const userAgent = new UserAgent();
-  const { data } = await axios.get(`https://www.amazon.com/s?k=${query}`, {
+  const { data } = await axios.get(`https://www.ean-search.org/?q=${query}`, {
     headers: {
       "User-Agent": userAgent.toString(),
       "Accept-Encoding": "gzip, deflate, br",
