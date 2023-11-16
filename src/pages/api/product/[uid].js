@@ -2,8 +2,6 @@ import amazon_search from "@/functions/amazon";
 import flipkart_search from "@/functions/flipkart";
 import upcitemdb_com from "@/functions/upcitemdb_com";
 
-export const runtime = "edge";
-
 const searchFunctions = [upcitemdb_com, flipkart_search, amazon_search];
 
 function searchFunctionWrapper(fn, arg) {
@@ -23,8 +21,7 @@ function searchFunctionWrapper(fn, arg) {
 }
 
 export default async function handler(req) {
-  const params = new URL(req.url).searchParams;
-  const uid = params.get("uid");
+  const { uid } = req.query;
 
   const searchFunctionsPromises = searchFunctions.map(async (fn) => {
     return {
