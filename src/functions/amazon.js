@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 import removeSpecialCharacters from "./removeSpecialChars";
 
 export default async function amazon_search(query) {
-  const { data } = await axios.get(`https://www.amazon.in/s?k=${query}`, {
+  const { data } = await axios.get(`https://www.amazon.com/s?k=${query}`, {
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
