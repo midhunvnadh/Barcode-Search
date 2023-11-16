@@ -1,5 +1,4 @@
 import amazon_search from "@/functions/engines/amazon";
-import barcodelookup from "@/functions/engines/barcodelookup";
 import ean_search_org from "@/functions/engines/ean_search.org";
 import flipkart_search from "@/functions/engines/flipkart";
 import go_upc from "@/functions/engines/go_upc";
@@ -20,11 +19,6 @@ const searchFunctions = [
   {
     name: "EANSearch",
     fn: ean_search_org,
-    category: "main",
-  },
-  {
-    name: "BarcodeLookup",
-    fn: barcodelookup,
     category: "main",
   },
   {
