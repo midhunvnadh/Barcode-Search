@@ -20,7 +20,7 @@ function searchFunctionWrapper(fn, arg) {
   });
 }
 
-export default async function handler(req) {
+export default async function handler(req, res) {
   const { uid } = req.query;
 
   const searchFunctionsPromises = searchFunctions.map(async (fn) => {
@@ -47,7 +47,5 @@ export default async function handler(req) {
     others: shopping_results_rd,
   };
 
-  return new Response(JSON.stringify(results), {
-    status: 200,
-  });
+  res.status(200).json(results);
 }
