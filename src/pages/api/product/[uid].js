@@ -26,11 +26,11 @@ const searchFunctions = [
     fn: amazon_search,
     category: "others",
   },
-  {
-    name: "Flipkart",
-    fn: flipkart_search,
-    category: "others",
-  },
+  // {
+  //   name: "Flipkart",
+  //   fn: flipkart_search,
+  //   category: "others",
+  // },
   {
     name: "Google",
     fn: google_search,
@@ -49,8 +49,8 @@ function searchFunctionWrapper(fn, name, arg) {
     fn(arg)
       .then((data) => {
         console.log(`Fetched data from ${name}`);
-        data = data.map(({ name: pd, price }) => {
-          return { engine: name, name: pd, price };
+        data = data.map(({ name: pd, price, image }) => {
+          return { engine: name, name: pd, price, image: image || "" };
         });
         resolve(data);
       })
