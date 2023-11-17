@@ -26,9 +26,8 @@ export default async function flipkart_search(query) {
   for (var i = 0; i < results.length; i++) {
     const product = results[i];
     const text = $(product).text();
-    products.push(text);
+    if (text) products.push({ name: removeSpecialCharacters(text), price: "" });
   }
 
-  products = products.map((product) => removeSpecialCharacters(product));
   return products;
 }

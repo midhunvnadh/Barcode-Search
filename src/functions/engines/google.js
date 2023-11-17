@@ -13,27 +13,42 @@ export default async function google_search(query) {
     },
   });
   const $ = cheerio.load(data);
-  writeFile("../../../../../google.html", data);
-  const results = $(
-    ".LC20lb.MBeuO.DKV0Md, .v7jaNc.ynAwRc.MBeuO.q8U8x.oewGkc.LeUQr"
-  );
-
-  try {
-    console.log(results);
-    const text = results.text();
-    console.log(text);
-  } catch (e) {
-    console.log(e);
-  }
+  const results = $(".MjjYud");
 
   var products = [];
 
   for (var i = 0; i < results.length; i++) {
     const product = results[i];
-    const text = $(product).text();
-    products.push(text);
+    var price = "";
+
+    const possibePriceClasses = $(product).find(".KeHKI, .fG8Fp.uo4vr span");
+
+    for (var j = 0; j < possibePriceClasses.length; j++) {
+      const possiblePrice = possibePriceClasses[j];
+      const possiblePriceText = $(possiblePrice).text();
+      const extractedPrice = extractPrice(possiblePriceText);
+      if (extractedPrice) {
+        price = possiblePriceText;
+      }
+    }
+
+    const name = $(product)
+      .find(".v7jaNc.ynAwRc.MBeuO.q8U8x.oewGkc.LeUQr, .LC20lb.MBeuO.DKV0Md")
+      .text();
+
+    if (name) products.push({ name: removeSpecialCharacters(name), price });
   }
 
-  products = products.map((product) => removeSpecialCharacters(product));
   return products;
+}
+
+function extractPrice(str) {
+  // Regular expression to match the numeric value in the string
+  const regex = /(?:\$|€|₹)[+-]?\d+(\.\d+)?/g;
+
+  // Extracting the matched value using the regex
+  const match = str.match(regex);
+
+  // If a match is found, return the matched value, else return null
+  return match ? match[0].slice(1) : null;
 }

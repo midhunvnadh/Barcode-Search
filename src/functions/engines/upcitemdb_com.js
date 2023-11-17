@@ -23,6 +23,10 @@ export default async function upcitemdb_com(query) {
     products.push(text);
   }
 
-  products = products.map((product) => removeSpecialCharacters(product));
+  products = products.map((product) => {
+    return {
+      name: removeSpecialCharacters(product),
+    };
+  });
   return products;
 }

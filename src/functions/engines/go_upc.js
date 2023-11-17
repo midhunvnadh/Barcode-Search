@@ -23,7 +23,14 @@ export default async function go_upc(query) {
     products.push(text);
   }
 
-  products = products.map((product) => removeSpecialCharacters(product));
+  const image = $(".product-image img").attr("src");
+
+  products = products.map((product) => {
+    return {
+      name: removeSpecialCharacters(product),
+      image,
+    };
+  });
 
   return products;
 }

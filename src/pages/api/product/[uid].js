@@ -48,12 +48,15 @@ function searchFunctionWrapper(fn, name, arg) {
     }, 4000);
     fn(arg)
       .then((data) => {
-        console.log(`Fetched data from ${name}`, data);
+        console.log(`Fetched data from ${name}`);
+        data = data.map(({ name: pd, price }) => {
+          return { engine: name, name: pd, price };
+        });
         resolve(data);
       })
       .catch((e) => {
         console.log(`Failed to fetch data from ${name}`);
-        if (name === "BarcodeLookup") console.log(e);
+        if (name === "Flipkart") console.log(e);
         resolve([]);
       })
       .finally(() => {
