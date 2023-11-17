@@ -13,7 +13,6 @@ export default async function amazon_search(query) {
     },
   });
   const $ = cheerio.load(data);
-  writeFile("../../../../../scrape.html", data);
 
   const results = $(
     ".a-size-base-plus.a-color-base.a-text-normal, .a-size-small.a-color-base.a-text-normal"

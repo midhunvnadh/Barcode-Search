@@ -12,7 +12,7 @@ const useFocus = () => {
 };
 
 export default function Home() {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [inputRef, setInputFocus] = useFocus();
@@ -86,9 +86,9 @@ export default function Home() {
           <div className="text-center">
             {results && (
               <div className="flex flex-col gap-3">
-                {!results.main &&
-                  results.others &&
-                  results.others.length === 0 && <div>No results found</div>}
+                {results.main?.length === 0 && results.others?.length === 0 && (
+                  <div>No results found</div>
+                )}
                 {results.main && results.main.length > 0 && (
                   <div className="bg-gray-300 p-3 rounded-md">
                     <div className="mb-3">
@@ -125,27 +125,37 @@ export default function Home() {
                       <h2 className="font-bold text-3xl">Other Results</h2>
                     </div>
                     <div className="flex items-center justify-start flex-wrap w-full">
-                      {results.others.map(({ engine, name, image }, i) => (
-                        <div
-                          className="lg:w-1/4 w-full p-3"
-                          key={`result-o-${i}-${name}`}
-                        >
-                          <div className="flex items-center flex-col gap-2 bg-white  p-3 rounded-md w-full h-full">
-                            <div className="w-full">
-                              <img
-                                src={image || "/placeholder.webp"}
-                                alt={name}
-                              />
+                      {results.others.map(
+                        ({ engine, name, image, price }, i) => (
+                          <div
+                            className="lg:w-1/4 w-full p-3"
+                            key={`result-o-${i}-${name}`}
+                          >
+                            <div className="flex items-center flex-col gap-2 bg-white  p-3 rounded-md w-full h-full">
+                              <div className="w-full">
+                                <img
+                                  src={image || "/placeholder.webp"}
+                                  alt={name}
+                                />
+                              </div>
+                              <div className="border-t w-full"></div>
+                              <div className="">
+                                <div className="font-bold">
+                                  <span>{engine}</span>
+                                  {price && (
+                                    <span className="font-bold">
+                                      {" "}
+                                      - {price}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="border-t w-full"></div>
+                              <div className="w-full">{name}</div>
                             </div>
-                            <div className="border-t w-full"></div>
-                            <div className="">
-                              <div className="font-bold">{engine}</div>
-                            </div>
-                            <div className="border-t w-full"></div>
-                            <div className="w-full">{name}</div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   </div>
                 )}
